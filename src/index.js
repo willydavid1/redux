@@ -7,11 +7,18 @@ import App from './components/App';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
+import reducers from './reducers'; // importamos los reducers
+
 // necesitamos crear un store, para pasarlo este almacenamiento a toda la app.
 // primer parametro son todos lo reducers de mi app, el segundo parametro es el estado inicial
 const store = createStore(
-	{}, // Son todos los reducers
+	reducers, // Son todos los reducers
 	{} // Estado inicial
 );
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(
+	<Provider store={store}>
+		<App />
+	</Provider>,
+	document.getElementById('root')
+);
