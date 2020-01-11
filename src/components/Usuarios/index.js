@@ -2,21 +2,23 @@ import React, { Component } from 'react';
 import axios from 'axios'; //importamos axios para hacer peticiones http
 import { connect } from 'react-redux'; //importamos el conector para poder conectar el componente con el reducer o almacenamiento global
 
+import * as usuariosActions from '../../actions/usuariosActions';
+
 class Usuarios extends Component {
+	// cuando se monte el componente vamos a modificar el estado, por lo que hace un re render (vuelve a renderizar)
+	componentDidMount() {
+		// //hacemos una peticion de tipo get a la API y la respuesta es una promesa y para leerla usaremos async/await
+		// const respuesta = await axios.get(
+		// 	'https://jsonplaceholder.typicode.com/users'
+		// ); //retorna un promesa y cuando se resuelva esa promesa asignala a la variable
 
-	// // cuando se monte el componente vamos a modificar el estado, por lo que hace un re render (vuelve a renderizar)
-	// async componentDidMount() {
-	// 	//hacemos una peticion de tipo get a la API y la respuesta es una promesa y para leerla usaremos async/await
-	// 	const respuesta = await axios.get(
-	// 		'https://jsonplaceholder.typicode.com/users'
-	// 	); //retorna un promesa y cuando se resuelva esa promesa asignala a la variable
+		// // console.log(respuesta.data);
 
-	// 	// console.log(respuesta.data);
-
-	// 	this.setState({
-	// 		usuarios: respuesta.data
-	// 	});
-	// }
+		// this.setState({
+		// 	usuarios: respuesta.data
+		// });
+		this.props.traerTodos()
+	}
 
 	//un metodo que retorna una fila por cada usuario que hay en el estado
 	ponerFilas = () =>
@@ -29,6 +31,7 @@ class Usuarios extends Component {
 		));
 
 	render() {
+		console.log(this.props)
 		return (
 			<div>
 				<table className="tabla">
@@ -47,10 +50,10 @@ class Usuarios extends Component {
 	}
 }
 
-// Recibe todos los reducers y le decimos que reducer queremos usar en este componente. 
+// Recibe todos los reducers y le decimos que reducer queremos usar en este componente.
 const mapStateToProps = (reducers) => {
 	return reducers.usuariosReducer;
 };
 
 // Ya en el connect recibe la función mapStateToProps, las acciones y por ultimo nos llega por props ese reducer es decir el estado.
-export default connect(mapStateToProps, {/* Actions */})(Usuarios);
+export default connect(mapStateToProps, usuariosActions)(Usuarios);
