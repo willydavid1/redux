@@ -37,12 +37,14 @@ class Usuarios extends Component {
 
 	render() {
 		return (
-			<div className="margen">
+			<div>
 				<table className="tabla">
 					<thead>
-						<th>Nombre</th>
-						<th>Correo</th>
-						<th>Enlace</th>
+						<tr>
+							<th>Nombre</th>
+							<th>Correo</th>
+							<th>Enlace</th>
+						</tr>
 					</thead>
 
 					<tbody>{this.ponerFilas()}</tbody>
