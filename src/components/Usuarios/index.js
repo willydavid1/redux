@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios'; //importamos axios para hacer peticiones http
 import { connect } from 'react-redux'; //importamos el conector para poder conectar el componente con el reducer o almacenamiento global
 
 import * as usuariosActions from '../../actions/usuariosActions';
@@ -7,16 +6,6 @@ import * as usuariosActions from '../../actions/usuariosActions';
 class Usuarios extends Component {
 	// cuando se monte el componente vamos a modificar el estado, por lo que hace un re render (vuelve a renderizar)
 	componentDidMount() {
-		// //hacemos una peticion de tipo get a la API y la respuesta es una promesa y para leerla usaremos async/await
-		// const respuesta = await axios.get(
-		// 	'https://jsonplaceholder.typicode.com/users'
-		// ); //retorna un promesa y cuando se resuelva esa promesa asignala a la variable
-
-		// // console.log(respuesta.data);
-
-		// this.setState({
-		// 	usuarios: respuesta.data
-		// });
 		this.props.traerTodos()
 	}
 
@@ -31,7 +20,6 @@ class Usuarios extends Component {
 		));
 
 	render() {
-		console.log(this.props)
 		return (
 			<div>
 				<table className="tabla">

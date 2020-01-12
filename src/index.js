@@ -4,8 +4,9 @@ import './index.css';
 import App from './components/App';
 
 // importamos cosas de redux
-import { createStore } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
+import reduxThunk from 'redux-thunk';
 
 import reducers from './reducers'; // importamos los reducers
 
@@ -13,7 +14,8 @@ import reducers from './reducers'; // importamos los reducers
 // primer parametro son todos lo reducers de mi app, el segundo parametro es el estado inicial
 const store = createStore(
 	reducers, // Son todos los reducers
-	{} // Estado inicial
+	{}, // Estado inicial
+	applyMiddleware(reduxThunk)
 );
 
 ReactDOM.render(
