@@ -2,18 +2,24 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; //importamos el conector para poder conectar el componente con el reducer o almacenamiento global
 
 import * as usuariosActions from '../../actions/usuariosActions';
-import Spinner from '../General/Spinner';
+import Spinner from '../General/Spinner'; //importamos el componente que muestra la animacion
+import Fatal from '../General/Fatal'; //importamos el componente que muestra el error
 
 class Usuarios extends Component {
 	// cuando se monte el componente vamos a modificar el estado, por lo que hace un re render (vuelve a renderizar)
 	componentDidMount() {
-		this.props.traerTodos()
+		this.props.traerTodos();
 	}
 
 	ponerContenido = () => {
 		// si esta cargando la peticion HTTP muestra un loader mientras
 		if (this.props.cargando) {
 			return <Spinner />;
+		}
+
+		// si hay algun error en el estado del reducer retorna el componente fatal
+		if (this.props.error) {
+			return <Fatal mensaje={ this.props.error } />;
 		}
 
 		return (
@@ -28,8 +34,8 @@ class Usuarios extends Component {
 
 				<tbody>{this.ponerFilas()}</tbody>
 			</table>
-		)
-	}
+		);
+	};
 
 	//un metodo que retorna una fila por cada usuario que hay en el estado
 	ponerFilas = () =>
@@ -42,11 +48,7 @@ class Usuarios extends Component {
 		));
 
 	render() {
-		return (
-			<div>
-				{ this.ponerContenido() }
-			</div>
-		);
+		return <div>{this.ponerContenido()}</div>;
 	}
 }
 
