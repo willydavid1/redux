@@ -2,11 +2,33 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux'; //importamos el conector para poder conectar el componente con el reducer o almacenamiento global
 
 import * as usuariosActions from '../../actions/usuariosActions';
+import Spinner from '../General/Spinner';
 
 class Usuarios extends Component {
 	// cuando se monte el componente vamos a modificar el estado, por lo que hace un re render (vuelve a renderizar)
 	componentDidMount() {
 		this.props.traerTodos()
+	}
+
+	ponerContenido = () => {
+		// si esta cargando la peticion HTTP muestra un loader mientras
+		if (this.props.cargando) {
+			return <Spinner />;
+		}
+
+		return (
+			<table className="tabla">
+				<thead>
+					<tr>
+						<th>Nombre</th>
+						<th>Correo</th>
+						<th>Enlace</th>
+					</tr>
+				</thead>
+
+				<tbody>{this.ponerFilas()}</tbody>
+			</table>
+		)
 	}
 
 	//un metodo que retorna una fila por cada usuario que hay en el estado
@@ -22,17 +44,7 @@ class Usuarios extends Component {
 	render() {
 		return (
 			<div>
-				<table className="tabla">
-					<thead>
-						<tr>
-							<th>Nombre</th>
-							<th>Correo</th>
-							<th>Enlace</th>
-						</tr>
-					</thead>
-
-					<tbody>{this.ponerFilas()}</tbody>
-				</table>
+				{ this.ponerContenido() }
 			</div>
 		);
 	}
