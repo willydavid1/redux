@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // IMPORTAMOS EL CONECTOR DE REDUX PARA CONECTAR ESTE COMPONENTE AL STORE GLOBAL
 import { connect } from 'react-redux';
@@ -7,13 +8,19 @@ import { connect } from 'react-redux';
 const Tabla = (props) => {
 	//un metodo que retorna una fila por cada usuario que hay en el estado
 	const ponerFilas = () =>
-		props.usuarios.map((usuario) => (
+		// el parametro key que recibe el map es el índice del ítem del arreglo
+		props.usuarios.map((usuario, key) => (
 			<tr key={usuario.id}>
 				<td>{usuario.name}</td>
 				<td>{usuario.email}</td>
 				<td>{usuario.website}</td>
+				<td>
+					<Link to={`/publicaciones/${key}`}>
+						<div className="eye-solid icon"></div>
+					</Link>
+				</td>
 			</tr>
-        ));
+		));
 
 	return (
 		<div>
@@ -34,8 +41,8 @@ const Tabla = (props) => {
 
 // Recibe todos los reducers y le decimos que reducer queremos usar en este componente.
 const mapStateToProps = (reducers) => {
-    return reducers.usuariosReducer;
-}
+	return reducers.usuariosReducer;
+};
 
 // Ya en el connect recibe la función mapStateToProps, las acciones y por ultimo nos llega por props ese reducer es decir el estado y los action creators no porque el componente usuarios ya las trae.
 export default connect(mapStateToProps)(Tabla);
