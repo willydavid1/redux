@@ -4,6 +4,7 @@ import { connect } from 'react-redux'; //importamos el conector para poder conec
 import * as usuariosActions from '../../actions/usuariosActions';
 import Spinner from '../General/Spinner'; //importamos el componente que muestra la animacion
 import Fatal from '../General/Fatal'; //importamos el componente que muestra el error
+import Tabla from './Tabla'; //importamos el componente tabla
 
 class Usuarios extends Component {
 	// cuando se monte el componente vamos a modificar el estado, por lo que hace un re render (vuelve a renderizar)
@@ -19,36 +20,28 @@ class Usuarios extends Component {
 
 		// si hay algun error en el estado del reducer retorna el componente fatal
 		if (this.props.error) {
-			return <Fatal mensaje={ this.props.error } />;
+			return <Fatal mensaje={this.props.error} />;
 		}
 
-		return (
-			<table className="tabla">
-				<thead>
-					<tr>
-						<th>Nombre</th>
-						<th>Correo</th>
-						<th>Enlace</th>
-					</tr>
-				</thead>
+		// si los datos estan vacios
+		if (this.props.usuarios.length === 0) {
+			return (
+				<div>
+					<h3>No encontramos ningún Usuario</h3>
+				</div>
+			);
+		}
 
-				<tbody>{this.ponerFilas()}</tbody>
-			</table>
-		);
+		return <Tabla />;
 	};
 
-	//un metodo que retorna una fila por cada usuario que hay en el estado
-	ponerFilas = () =>
-		this.props.usuarios.map((usuario) => (
-			<tr key={usuario.id}>
-				<td>{usuario.name}</td>
-				<td>{usuario.email}</td>
-				<td>{usuario.website}</td>
-			</tr>
-		));
-
 	render() {
-		return <div>{this.ponerContenido()}</div>;
+		return (
+			<div>
+				<h1>Usuarios</h1>
+				{this.ponerContenido()}
+			</div>
+		);
 	}
 }
 
@@ -57,5 +50,5 @@ const mapStateToProps = (reducers) => {
 	return reducers.usuariosReducer;
 };
 
-// Ya en el connect recibe la función mapStateToProps, las acciones y por ultimo nos llega por props ese reducer es decir el estado.
+// Ya en el connect recibe la función mapStateToProps, las acciones y por ultimo nos llega por props ese reducer es decir el estado y los action creators.
 export default connect(mapStateToProps, usuariosActions)(Usuarios);
