@@ -9,7 +9,10 @@ import Tabla from './Tabla'; //importamos el componente tabla
 class Usuarios extends Component {
 	// cuando se monte el componente vamos a modificar el estado, por lo que hace un re render (vuelve a renderizar)
 	componentDidMount() {
-		this.props.traerTodos();
+		// si no hay ningun usuarios traelos y si existen no hagas nada
+		if (!this.props.usuarios.length) {
+			this.props.traerTodos();
+		}
 	}
 
 	ponerContenido = () => {
@@ -36,6 +39,7 @@ class Usuarios extends Component {
 	};
 
 	render() {
+		console.log(this.props)
 		return (
 			<div>
 				<h1>Usuarios</h1>
