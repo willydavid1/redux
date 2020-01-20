@@ -19,3 +19,15 @@ export const traerTodos = () => async (dispatch) => {
 		});
     }
 };
+
+// creamos un action creator que va hacer la llamada a un único usuario, recibe por parametro key que es el índice del ítem del arreglo que se esta enviando
+export const traerPorUsuario = (key) => async (dispatch, getState) => {
+	const { usuarios } = getState().usuariosReducer; //getState puedo tener acceso al estado actual, voy a traer los usuarios que hay en ese reducer
+	const usuario_id = usuarios[key].id //saco el id del usuario | el parametro key que recibe es el índice del ítem del arreglo
+	
+	const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${usuario_id}`)
+	dispatch({
+		type: TRAER_TODOS,
+		payload: respuesta.data
+	});
+}

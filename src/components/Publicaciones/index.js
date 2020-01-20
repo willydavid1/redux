@@ -7,14 +7,17 @@ import * as publicacionesActions from '../../actions/publicacionesActions';
 
 // destructuramos y renombramos el nombre del action creator
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
-const { traerTodos: publicacionesTraerTodos } = publicacionesActions;
+const { traerPorUsuario: publicacionesTraerPorUsuario } = publicacionesActions;
 
 class Publicaciones extends Component {
-	componentDidMount() {
+	async componentDidMount() {
 		// si no existen los usuarios (si no tiene mas de cero el arreglo) haz algo
 		if (!this.props.usuariosReducer.usuarios.length) {
-			this.props.usuariosTraerTodos();
+			await this.props.usuariosTraerTodos();
 		}
+
+		// llamamos al actions creator de publicaciones
+		this.props.publicacionesTraerPorUsuario(this.props.match.params.key);
 	}
 
 	render() {
@@ -39,7 +42,7 @@ const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
 // como estamos usando varias acciones le especificamos las acciones que usaremos
 const mapDispatchToProps = {
 	usuariosTraerTodos,
-	publicacionesTraerTodos
+	publicacionesTraerPorUsuario
 };
 
 // Ya en el connect recibe la función mapStateToProps, las acciones y por ultimo nos llega por props ese reducer es decir el estado y los action creators por props
