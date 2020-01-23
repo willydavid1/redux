@@ -40,6 +40,7 @@ class Publicaciones extends Component {
 		}
 	}
 
+	// se va a poner en el render
 	ponerUsuario = () => {
 		// destructuro el usuarios reducers
 		const { 
@@ -63,17 +64,49 @@ class Publicaciones extends Component {
 		return (
 		<h1> Publicaciones de {nombre} </h1>
 		)
-
 	};
+
+	// se va a poner en el render
+	ponerPublicaciones = () => {
+		// destructuramos
+		const {
+			usuariosReducer,
+			usuariosReducer: { usuarios },
+			publicacionesReducer,
+			publicacionesReducer: { publicaciones },
+			match: { params: { key } } 
+		} = this.props;
+
+		// si no hay usuarios, retorna nada, si hay un error retorna nada porque en ponerUsuario() ya lo estamos validando
+		if (!usuarios.length) return;
+		if (usuariosReducer.error) return;
+
+		// si publicaciones esta cargando, retorno el spinner y si hay un error retorno el fatal mandandole el error y si las publicaciones aun no estan retorna nada y si el atributo publicaciones_key no esta en el reducer retorna nada.
+		if (publicacionesReducer.cargando) {
+			return <Spinner />;
+		}
+		if (publicacionesReducer.error) {
+			return <Fatal mensaje={publicacionesReducer.error} />
+		}
+		if (publicaciones.length === 0) return;
+		if (!("publicaciones_key" in usuarios[key])) return;
+	
+		// y si todo esta bien ya tengo las publicaciones y de ese usuario destructuro publicaciones key (donde estan las publicaciones de este usuario) y retorno todas las publicaciones que estan en esa casilla del arreglo
+		const { publicaciones_key } = usuarios[key]
+		return publicaciones[publicaciones_key].map( (publicacion) => ( 
+			<div className="publicaciones-titulo">
+				<h2>{ publicacion.title }</h2>
+				<h3>{publicacion.body}</h3>
+			</div>
+		));
+	}	
 
 	render() {
 		console.log(this.props);
 		return (
 			<div>
-				
-				{this.props.match.params.key}
-
 				{ this.ponerUsuario() }
+				{ this.ponerPublicaciones() }
 			</div>
 		);
 	}
