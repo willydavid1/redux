@@ -94,7 +94,11 @@ class Publicaciones extends Component {
 		// y si todo esta bien ya tengo las publicaciones y de ese usuario destructuro publicaciones key (donde estan las publicaciones de este usuario) y retorno todas las publicaciones que estan en esa casilla del arreglo
 		const { publicaciones_key } = usuarios[key]
 		return publicaciones[publicaciones_key].map( (publicacion) => ( 
-			<div className="publicaciones-titulo">
+			<div 
+				key={ publicacion.id }
+				className="publicaciones-titulo"
+				onClick={ () => alert(publicacion.id) }
+			>
 				<h2>{ publicacion.title }</h2>
 				<h3>{publicacion.body}</h3>
 			</div>

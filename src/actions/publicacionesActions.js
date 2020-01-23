@@ -7,37 +7,51 @@ const { TRAER_TODOS: USUARIOS_TRAER_TODOS } = usuariosTypes
 
 // creamos un action creator que va hacer la llamada a un único usuario, recibe por parametro key que es el índice del ítem del arreglo que se esta enviando
 export const traerPorUsuario = (key) => async (dispatch, getState) => {
+
+	dispatch({
+		type: CARGANDO
+	});
+
 	const { usuarios } = getState().usuariosReducer; //getState puedo tener acceso al estado actual, voy a traer los usuarios que hay en ese reducer
 	const { publicaciones } = getState().publicacionesReducer; //getState puedo tener acceso al estado actual, voy a traer las publicaciones de publicacionesReducer
 	const usuario_id = usuarios[key].id //saco el id del usuario | el parametro key que recibe es el índice del ítem del arreglo
 	
-	const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${usuario_id}`)
+	try {
+		const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${usuario_id}`)
 
-	// de las publicaciones del reducer lo despliego aqui y le agrego las publicaciones nuevas
-	const publicaciones_actualizadas = [
-		...publicaciones,
-		respuesta.data
-	]
+		// de las publicaciones del reducer lo despliego aqui y le agrego las publicaciones nuevas
+		const publicaciones_actualizadas = [
+			...publicaciones,
+			respuesta.data
+		]
 
-	// Falta decirle al usuariosReducer tus publicaciones están en esta casilla del arreglo.
-	// NECESITO SACAR LA ULTIMA CASILLA DE ESTAS PUBLICACIONES actualizadas | me da el numero de casillas que hay (1er render da cero y en el re-render hay uno) y le restp 1 para sacar la casilla
-	// Ahora tengo que actualizar los usuarios, creo un nuevo arreglo con todos estos usuarios que hay en el estado actual
-	// al usuario en especifico de ese arreglo le creare un atributo, con la posicion de su key o index.
-	const publicaciones_key = publicaciones_actualizadas.length - 1;
-	const usuarios_actualizados = [...usuarios];
-	usuarios_actualizados[key] = {
-		...usuarios[key],
-		publicaciones_key
+		// envia al publicaciones_reducers el arreglo con las publicaciones del usuario que se estan viendo y despues hacemos el proximo dispatch al usuario en esta casilla están tus publicaciones 
+		dispatch({
+			type: TRAER_POR_USUARIO,
+			payload: publicaciones_actualizadas
+		});
+
+		// Falta decirle al usuariosReducer tus publicaciones están en esta casilla del arreglo.
+		// NECESITO SACAR LA ULTIMA CASILLA DE ESTAS PUBLICACIONES actualizadas | me da el numero de casillas que hay (1er render da cero y en el re-render hay uno) y le restp 1 para sacar la casilla
+		// Ahora tengo que actualizar los usuarios, creo un nuevo arreglo con todos estos usuarios que hay en el estado actual
+		// al usuario en especifico de ese arreglo le creare un atributo, con la posicion de su key o index.
+		const publicaciones_key = publicaciones_actualizadas.length - 1;
+		const usuarios_actualizados = [...usuarios];
+		usuarios_actualizados[key] = {
+			...usuarios[key],
+			publicaciones_key
+		}
+		
+		// dispatch para mandar los usuarios actualizados a usuariosReducer que es un arreglo con todos los usuarios solo que con un atributo llamado publicaciones_key que nos dice en que casilla del arreglo están las publicaciones del usuario
+		dispatch({
+			type: USUARIOS_TRAER_TODOS,
+			payload: usuarios_actualizados
+		});
+	} catch (error) {
+		console.log(error.message);
+		dispatch({
+			type: ERROR,
+			payload: 'Publicaciones no disponibles' 
+		})
 	}
-	
-	// dispatch para mandar los usuarios actualizados a usuariosReducer que es un arreglo con todos los usuarios solo que con un atributo llamado publicaciones_key que nos dice en que casilla del arreglo están las publicaciones del usuario
-	dispatch({
-		type: USUARIOS_TRAER_TODOS,
-		payload: usuarios_actualizados
-	});
-
-	dispatch({
-		type: TRAER_POR_USUARIO,
-		payload: publicaciones_actualizadas
-	});
 }
