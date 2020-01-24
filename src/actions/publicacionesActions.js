@@ -19,10 +19,17 @@ export const traerPorUsuario = (key) => async (dispatch, getState) => {
 	try {
 		const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/posts?userId=${usuario_id}`)
 
-		// de las publicaciones del reducer lo despliego aqui y le agrego las publicaciones nuevas
+		// variable sera un arreglo de objetos con todo lo que me trae respuesta.data y le agrego a cada publicacion dos atributos mas
+		const nuevas = respuesta.data.map( (publicacion) => ({
+			...publicacion,
+			comentarios: [],
+			abierto: false
+		}));
+
+		// de las publicaciones del reducer lo despliego aqui y le agrego las publicaciones nuevas que recibimos de este usuario
 		const publicaciones_actualizadas = [
 			...publicaciones,
-			respuesta.data
+			nuevas
 		]
 
 		// envia al publicaciones_reducers el arreglo con las publicaciones del usuario que se estan viendo y despues hacemos el proximo dispatch al usuario en esta casilla están tus publicaciones 
@@ -54,4 +61,9 @@ export const traerPorUsuario = (key) => async (dispatch, getState) => {
 			payload: 'Publicaciones no disponibles' 
 		})
 	}
+}
+
+// actions que recibe por parametro la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click (sacamos el índice de la publicación del map)
+export const abrirCerrar = (pub_key, com_key) => (dispatch) => {
+	console.log(pub_key, com_key)
 }

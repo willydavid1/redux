@@ -11,7 +11,7 @@ import Fatal from '../General/Fatal';
 
 // destructuramos y renombramos el nombre del action creator
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
-const { traerPorUsuario: publicacionesTraerPorUsuario } = publicacionesActions;
+const { traerPorUsuario: publicacionesTraerPorUsuario, abrirCerrar } = publicacionesActions;
 
 class Publicaciones extends Component {
 	async componentDidMount() {
@@ -92,18 +92,28 @@ class Publicaciones extends Component {
 		if (!("publicaciones_key" in usuarios[key])) return;
 	
 		// y si todo esta bien ya tengo las publicaciones y de ese usuario destructuro publicaciones key (donde estan las publicaciones de este usuario) y retorno todas las publicaciones que estan en esa casilla del arreglo
+		// mando por parametro de todas las publicaciones selecciono las publicaciones que le corresponden a este usuario
 		const { publicaciones_key } = usuarios[key]
-		return publicaciones[publicaciones_key].map( (publicacion) => ( 
+		return this.mostrarInfo( 
+			publicaciones[publicaciones_key],
+			publicaciones_key 
+		);
+	};
+
+	// funcion que retorna todas las publicaciones del usuario en especifico (recibimos por parametro todas las publicaciones que le corresponden a este usuario y la casilla de donde estan las publicaciones de este usuario)
+	mostrarInfo = ( publicaciones, pub_key ) => (
+		publicaciones.map( (publicacion, com_key) => ( 
 			<div 
 				key={ publicacion.id }
 				className="publicaciones-titulo"
-				onClick={ () => alert(publicacion.id) }
+				onClick={ () => this.props.abrirCerrar(pub_key, com_key) }
 			>
 				<h2>{ publicacion.title }</h2>
 				<h3>{publicacion.body}</h3>
 			</div>
-		));
-	}	
+		))
+	);
+
 
 	render() {
 		console.log(this.props);
@@ -124,10 +134,11 @@ const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
 	};
 };
 
-// como estamos usando varias acciones le especificamos las acciones que usaremos
+// como estamos usando varias acciones le especificamos las acciones que usaremos en este componente
 const mapDispatchToProps = {
 	usuariosTraerTodos,
-	publicacionesTraerPorUsuario
+	publicacionesTraerPorUsuario,
+	abrirCerrar
 };
 
 // Ya en el connect recibe la función mapStateToProps, las acciones y por ultimo nos llega por props ese reducer es decir el estado y los action creators por props
