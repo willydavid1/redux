@@ -90,3 +90,8 @@ export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
 	});
 
 }
+
+// actions que recibe por parametro la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click (sacamos el índice de la publicación del map)
+export const traerComentarios = (pub_key, com_key) => (dispatch, getState) => {
+	
+}

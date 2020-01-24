@@ -8,10 +8,15 @@ import * as publicacionesActions from '../../actions/publicacionesActions';
 import Spinner from '../General/Spinner';
 import Fatal from '../General/Fatal';
 
+import Comentarios from "./Comentarios" // importamos el componente
 
 // destructuramos y renombramos el nombre del action creator
 const { traerTodos: usuariosTraerTodos } = usuariosActions;
-const { traerPorUsuario: publicacionesTraerPorUsuario, abrirCerrar } = publicacionesActions;
+const { 
+	traerPorUsuario: publicacionesTraerPorUsuario, 
+	abrirCerrar,
+	traerComentarios
+	} = publicacionesActions;
 
 class Publicaciones extends Component {
 	async componentDidMount() {
@@ -106,17 +111,28 @@ class Publicaciones extends Component {
 			<div 
 				key={ publicacion.id }
 				className="publicaciones-titulo"
-				onClick={ () => this.props.abrirCerrar(pub_key, com_key) }
+				onClick={ 
+					() => this.mostrarComentarios(pub_key, com_key, publicacion.comentarios)
+				}
 			>
 				<h2>{ publicacion.title }</h2>
 				<h3>{publicacion.body}</h3>
 				{
 					// si el atributo abierto de la publicacion es cierto retorna abierto caso contrario es cerrado
-					(publicacion.abierto) ? 'abierto' : 'cerrado'
+					(publicacion.abierto) ? <Comentarios /> : ""
 				}
 			</div>
 		))
 	);
+
+	// Cada vez que hagan click llama a esta function y recibe por parametro la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click (sacamos el índice de la publicación del map) y nos llegan los comentarios
+	mostrarComentarios = (pub_key, com_key, comentarios) => {
+		// llamamos al actions Creator que modifica el atributo abierto de la publicacion
+		this.props.abrirCerrar(pub_key, com_key);
+
+		//llamamos a este actionsCreator y le mandamos la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click
+		this.props.traerComentarios(pub_key, com_key);
+	}
 
 
 	render() {
@@ -142,7 +158,8 @@ const mapStateToProps = ({ usuariosReducer, publicacionesReducer }) => {
 const mapDispatchToProps = {
 	usuariosTraerTodos,
 	publicacionesTraerPorUsuario,
-	abrirCerrar
+	abrirCerrar,
+	traerComentarios
 };
 
 // Ya en el connect recibe la función mapStateToProps, las acciones y por ultimo nos llega por props ese reducer es decir el estado y los action creators por props
