@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { TRAER_POR_USUARIO, CARGANDO, ERROR } from '../types/publicacionesTypes'; // IMPORTAMOS SOLAMENTE las constante TRAER_TODOS de esta ruta ../types/publicacionesTypes
+import { ACTUALIZAR, CARGANDO, ERROR } from '../types/publicacionesTypes'; // IMPORTAMOS SOLAMENTE las constante TRAER_TODOS de esta ruta ../types/publicacionesTypes
 import * as usuariosTypes from '../types/usuariosTypes' //importamos los types de usuarios
 
 // destructuramos y renombramos el tipo de traer todos
@@ -34,7 +34,7 @@ export const traerPorUsuario = (key) => async (dispatch, getState) => {
 
 		// envia al publicaciones_reducers el arreglo con las publicaciones del usuario que se estan viendo y despues hacemos el proximo dispatch al usuario en esta casilla están tus publicaciones 
 		dispatch({
-			type: TRAER_POR_USUARIO,
+			type: ACTUALIZAR,
 			payload: publicaciones_actualizadas
 		});
 
@@ -64,6 +64,29 @@ export const traerPorUsuario = (key) => async (dispatch, getState) => {
 }
 
 // actions que recibe por parametro la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click (sacamos el índice de la publicación del map)
-export const abrirCerrar = (pub_key, com_key) => (dispatch) => {
-	console.log(pub_key, com_key)
+export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
+
+	const { publicaciones } = getState().publicacionesReducer; //getState puedo tener acceso al estado actual, voy a traer las publicaciones de publicacionesReducer (las publicaciones es un arreglo que tiene dentro las publicaciones)
+	const seleccionada = publicaciones[pub_key][com_key] //de todas las publicaciones de este usuario vas a seleccionar la publicacion que le di click
+
+	// despliega especificamente la publicacion a la que le dio click y modificamos la propiedad de abierto por el contrario que seleccionada tiene abierto: !seleccionada.abierto
+	const actualizada = {
+		...seleccionada,
+		abierto: !seleccionada.abierto
+	}
+
+	const publicaciones_actualizadas = [...publicaciones]; // esta constante sera el arreglo con todas las publicaciones
+	// seleccionamos las publicaciones del usuario y desplegamos todas las publicaciones de este usuario
+	publicaciones_actualizadas[pub_key] = [
+		...publicaciones[pub_key]
+	];
+	// de todas las publicaciones del usuario, selecciono a la que se le dio click y sera igual a la publicacion pero con el abierto cambiado 
+	publicaciones_actualizadas[pub_key][com_key] = actualizada;
+
+	// Hago un dispatch mandando el arreglo con todas las publicaciones de los usuarios al PublicacionesReducer, pero a la publicación que se le dio click será igual a la publicación pero con el atributo abierto cambiado.
+	dispatch({
+		type: ACTUALIZAR,
+		payload: publicaciones_actualizadas
+	});
+
 }

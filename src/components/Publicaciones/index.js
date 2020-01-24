@@ -110,6 +110,10 @@ class Publicaciones extends Component {
 			>
 				<h2>{ publicacion.title }</h2>
 				<h3>{publicacion.body}</h3>
+				{
+					// si el atributo abierto de la publicacion es cierto retorna abierto caso contrario es cerrado
+					(publicacion.abierto) ? 'abierto' : 'cerrado'
+				}
 			</div>
 		))
 	);

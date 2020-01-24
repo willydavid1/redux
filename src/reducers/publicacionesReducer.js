@@ -1,4 +1,4 @@
-import { TRAER_POR_USUARIO, CARGANDO, ERROR } from '../types/publicacionesTypes'; // IMPORTAMOS SOLAMENTE las constante TRAER_TODOS de esta ruta ../types/publicacionesTypes
+import { ACTUALIZAR, CARGANDO, ERROR } from '../types/publicacionesTypes'; // IMPORTAMOS SOLAMENTE las constante TRAER_TODOS de esta ruta ../types/publicacionesTypes
 
 // inicializamos un estado
 const INITIAL_STATE = {
@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
 	//se crea el switch porque llegaran varias tareas y solo se distingue por el nombre
 	switch (action.type) {
-		case TRAER_POR_USUARIO:
+		case ACTUALIZAR:
 			return {
 				...state,
 				publicaciones: action.payload,
