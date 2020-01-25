@@ -130,8 +130,12 @@ class Publicaciones extends Component {
 		// llamamos al actions Creator que modifica el atributo abierto de la publicacion
 		this.props.abrirCerrar(pub_key, com_key);
 
-		//llamamos a este actionsCreator y le mandamos la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click
-		this.props.traerComentarios(pub_key, com_key);
+		//si comentarios esta vacio, llamamos a este actionsCreator Y este retona todas las publicaciones pero modifica el atributo comentarios de la publicación que se le dio CLICK
+		if (comentarios.length === 0) {
+			this.props.traerComentarios(pub_key, com_key);
+		}
+		
+
 	}
 
 

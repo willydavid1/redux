@@ -91,7 +91,34 @@ export const abrirCerrar = (pub_key, com_key) => (dispatch, getState) => {
 
 }
 
-// actions que recibe por parametro la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click (sacamos el índice de la publicación del map)
-export const traerComentarios = (pub_key, com_key) => (dispatch, getState) => {
-	
+// va a buscar los comentarios de la publicacion que se le dio click, actions que recibe por parametro la casilla de donde están las publicaciones de este usuario y a cual publicación en especifico fue a la que le di click (sacamos el índice de la publicación del map)
+export const traerComentarios = (pub_key, com_key) => async (dispatch, getState) => {
+
+	const { publicaciones } = getState().publicacionesReducer; //getState puedo tener acceso al estado actual, voy a traer las publicaciones de publicacionesReducer (las publicaciones es un arreglo que tiene dentro las publicaciones)
+	const seleccionada = publicaciones[pub_key][com_key] //de todas las publicaciones de este usuario vas a seleccionar la publicacion que le di click
+
+	// buscamos los comentarios de la publicacion a la que se le dio click.
+	const respuesta = await axios.get(`https://jsonplaceholder.typicode.com/comments?postId=${seleccionada.id}`)
+
+	// objeto que depliega todo lo que tiene la publicacion que le di click, y el atributo comentarios por los comentarios de la publicacion a la que se le dio click, lo cambio por el respuesta.data
+	const actualizada = {
+		...seleccionada,
+		comentarios: respuesta.data
+	}
+
+	// hacemos inmutabilidad
+	const publicaciones_actualizadas = [...publicaciones]; // esta constante sera el arreglo con todas las publicaciones
+	// seleccionamos las publicaciones del usuario y desplegamos todas las publicaciones de este usuario
+	publicaciones_actualizadas[pub_key] = [
+		...publicaciones[pub_key]
+	];
+	// de todas las publicaciones del usuario, selecciono a la que se le dio click y sera igual a la publicacion pero con los comentarios de la publicacion actualizados
+	publicaciones_actualizadas[pub_key][com_key] = actualizada;
+
+	// Hago un dispatch mandando el arreglo con todas las publicaciones de los usuarios al PublicacionesReducer, pero a la publicación que se le dio click será igual a la publicación pero con el atributo comentarios actualizados.
+	dispatch({
+		type: ACTUALIZAR,
+		payload: publicaciones_actualizadas
+	});
+
 }
