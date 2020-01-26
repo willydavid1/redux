@@ -1,5 +1,13 @@
 import axios from 'axios';
-import { ACTUALIZAR, CARGANDO, ERROR, COM_ERROR, COM_CARGANDO } from '../types/publicacionesTypes'; // IMPORTAMOS SOLAMENTE las constante TRAER_TODOS de esta ruta ../types/publicacionesTypes
+import {
+	ACTUALIZAR,
+	CARGANDO,
+	ERROR,	
+	COM_ACTUALIZAR,
+	COM_ERROR,
+	COM_CARGANDO
+} from '../types/publicacionesTypes'; // IMPORTAMOS SOLAMENTE las constante TRAER_TODOS de esta ruta ../types/publicacionesTypes
+
 import * as usuariosTypes from '../types/usuariosTypes' //importamos los types de usuarios
 
 // destructuramos y renombramos el tipo de traer todos
@@ -122,7 +130,7 @@ export const traerComentarios = (pub_key, com_key) => async (dispatch, getState)
 
 		// Hago un dispatch mandando el arreglo con todas las publicaciones de los usuarios al PublicacionesReducer, pero a la publicación que se le dio click será igual a la publicación pero con el atributo comentarios actualizados.
 		dispatch({
-			type: ACTUALIZAR,
+			type: COM_ACTUALIZAR,
 			payload: publicaciones_actualizadas
 		});
 	} catch (error) {

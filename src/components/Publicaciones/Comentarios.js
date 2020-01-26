@@ -6,20 +6,26 @@ import Fatal from '../General/Fatal';
 // recibe por props los comentarios de la publicacion que se le dio click
 const Comentarios = (props) => {
 
-	// si esta cargando retorna el spinner
-	if (props.cargando) {
+	
+	if (props.com_error) {
+		return <Fatal mensaje={ props.com_error } />
+	}
+
+	// si esta cargando y que no exista ningun comentario retorna el spinner
+	if (props.com_cargando && props.comentarios.length === 0) {
 		return <Spinner />
 	}
 
-	if (props.error) {
-		return <Fatal mensaje={ props.error } />
+	// si los comentarios vienen vacios, entonces no tiene comentarios esta publicacion
+	if (props.comentarios.length === 0) {
+		return <Fatal mensaje={" Este publicacion no tiene comentarios "} />
 	}
 
 
 	// retona un arreglo, itero los comentarios de la publicacion y por cada comentario retorna un li
 	const ponerComentarios = () =>
 		props.comentarios.map((comentario) => (
-			<li>
+			<li key={comentario.id}>
 				<b>
 					<u> {comentario.email} </u>
 				</b>

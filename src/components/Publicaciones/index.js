@@ -118,7 +118,7 @@ class Publicaciones extends Component {
 				<h2>{ publicacion.title }</h2>
 				<h3>{publicacion.body}</h3>
 				{
-					// si el atributo abierto de la publicacion es true retorna el componente caso contrario es cerrado
+					// si el atributo abierto de la publicacion es true retorna el componente caso contrario es cerrado, le mandamos por props los comentarios
 					(publicacion.abierto) ? <Comentarios comentarios={publicacion.comentarios} /> : ""
 				}
 			</div>
