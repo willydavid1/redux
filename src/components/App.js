@@ -3,8 +3,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import Menu from './Menu'; //importamos el menu
 import Usuarios from './Usuarios'; //importamos el componente usuarios que es una tabla
 import Publicaciones from './Publicaciones';
-
-const Tareas = () => <div>Tareas</div>;
+import Tareas from "./Tareas"; // importo el componente tareas
 
 const App = () => (
 	<BrowserRouter>
