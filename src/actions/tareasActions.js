@@ -12,9 +12,23 @@ export const traerTodas = () => async (dispatch) => {
 			'https://jsonplaceholder.typicode.com/todos'
 		); //retorna un promesa y cuando se resuelva esa promesa asignala a la variable
 
+		// Creo mi objeto vacio de tareas, por todo lo que me esta repondiendo la api que es un arreglo, por cada tarea voy a iterar, El objeto vacio de tareas le voy a agregar un atributo-objeto que es el tar.userId el id de cada usuario(tar vale a cada tarea) y a ese objeto despliega todo lo que tenga las tareas en ese id y le pasamos un nuevo atributo a ese objeto que es el id de la tarea y le pasamos todo el objeto.
+		// el segundo objeto a iterar de la api, a tareas al objeto con el id del usuario 1: a ese objeto le despligo todo lo que ya tenia, tenia el objeto 1 que era la tarea anterior con id 1 y aparte a ese objeto le voy agregar la propiedad 2, va a tener la propiedad 1 y le añado la propiedad dos
+		// acomoda en un objeto con id del usuario, las tareas que le corresponden a este usuario
+		const tareas = {}
+		respuesta.data.map( (tar) => (
+			tareas[tar.userId] = {
+				...tareas[tar.userId],
+				[tar.id]: {
+					...tar
+				}
+			}
+		));
+		console.log(respuesta.data)
+
 		dispatch({
 			type: TRAER_TODAS,
-			payload: respuesta.data
+			payload: tareas
 		});
 	} catch (error) {
 		console.log('error:' + error.message);
