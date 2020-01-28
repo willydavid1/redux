@@ -8,6 +8,8 @@ import * as tareasActions from '../../actions/tareasActions'; // actions
 import Spinner from '../General/Spinner';
 import Fatal from '../General/Fatal';
 
+import { Link } from 'react-router-dom';
+
 class Tareas extends Component {
 	componentDidMount() {
 		this.props.traerTodas();
@@ -55,8 +57,16 @@ class Tareas extends Component {
 	};
 
 	render() {
-		console.log(this.props);
-		return <div>{this.mostrarContenido()}</div>;
+		return (
+			<div>
+				<button>
+					<Link to="/tareas/guardar">
+						Agregar
+					</Link>
+				</button>
+				{this.mostrarContenido()}
+			</div>
+		);
 	}
 }
 
