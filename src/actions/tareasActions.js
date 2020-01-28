@@ -24,7 +24,6 @@ export const traerTodas = () => async (dispatch) => {
 				}
 			}
 		));
-		console.log(respuesta.data)
 
 		dispatch({
 			type: TRAER_TODAS,
