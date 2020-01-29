@@ -53,3 +53,28 @@ export const cambioTitulo = (titulo) => (dispatch) => {
 		payload: titulo
 	})
 }
+
+// actions que recibe por parametro un objeto con la info de la nueva tarea, que se mandara a la API para que la API lo maneje
+export const agregar = (nueva_tarea) => async (dispatch) => {
+	// dispatch de cargando
+	dispatch({
+		type: CARGANDO
+	})
+
+	try {
+		//peticion POST el segundo parametro es el objeto que le voy a agregar a la API, y me retorna la respuesta de la peticion en respuesta.data el nuevo campo que se agrego, porque la api es una api fake.
+		const respuesta = await axios.post("https://jsonplaceholder.typicode.com/todos", nueva_tarea)
+		console.log(respuesta.data)
+
+		// dispatch de tipo agregada para que se actualize el estado y no le doy payload porque ya se guardo en la base de datos
+		dispatch({
+			type: "agregada"
+		})
+	} catch (error) {
+		console.log(error.message)
+		dispatch({
+			type: ERROR,
+			payload: "Intente más tarde"
+		})
+	}
+}

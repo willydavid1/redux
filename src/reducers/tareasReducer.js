@@ -5,8 +5,8 @@ const INITIAL_STATE = {
 	tareas: {},
 	cargando: false,
 	error: '',
-	usuario_id: '9',
-	titulo: 'qwerty'
+	usuario_id: '',
+	titulo: ''
 };
 
 //aquí se crea la función, el estado inicial, y la acción es la "tarea a realizar"
@@ -33,6 +33,9 @@ export default (state = INITIAL_STATE, action) => {
 		
 		case "cambio_titulo":
 			return { ...state, titulo: action.payload }
+
+		case "agregada":
+			return { ...state, tareas:{}, cargando: false, error: ""}
 
 		default:
 			return state;

@@ -20,6 +20,21 @@ class Guardar extends Component {
         this.props.cambioTitulo(event.target.value)
     }
 
+    // maneja el evento click del boton guardar
+    guardar = () => {
+        // destructuro el estado, que tiene lo que escribio en el input
+        const { usuario_id, titulo, agregar } = this.props
+
+        // objeto que tiene los valores de la nueva tarea que se enviara a la API
+        const nueva_tarea = {
+            userId: usuario_id,
+            title: titulo,
+            completed: false
+        }
+
+        // llamo al action que va a hacer la peticion POST
+        agregar(nueva_tarea)
+    }
 
 	render() {
 		return (
@@ -46,7 +61,9 @@ class Guardar extends Component {
                 <br />
 				<br />
 
-                <button>
+                <button 
+                    onClick={ this.guardar }
+                >
                     Guardar
                 </button>
 			</div>
