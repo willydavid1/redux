@@ -4,7 +4,9 @@ import { TRAER_TODAS, CARGANDO, ERROR } from '../types/tareasTypes'; // IMPORTAM
 const INITIAL_STATE = {
 	tareas: {},
 	cargando: false,
-	error: ''
+	error: '',
+	usuario_id: '9',
+	titulo: 'qwerty'
 };
 
 //aquí se crea la función, el estado inicial, y la acción es la "tarea a realizar"
@@ -25,6 +27,12 @@ export default (state = INITIAL_STATE, action) => {
 
 		case ERROR:
 			return { ...state, error: action.payload, cargando: false };
+
+		case "cambio_usuario_id":
+			return { ...state, usuario_id: action.payload }
+		
+		case "cambio_titulo":
+			return { ...state, titulo: action.payload }
 
 		default:
 			return state;

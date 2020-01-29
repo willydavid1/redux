@@ -37,3 +37,19 @@ export const traerTodas = () => async (dispatch) => {
 		});
 	}
 };
+
+// esta accion va a cambiar usuarioId mandando un dispatch que modifica ese atributo del reducer, recibe por parametro lo que se escribio en el input
+export const cambioUsuarioId = (usuario_id) => (dispatch) => {
+	dispatch({
+		type: "cambio_usuario_id",
+		payload: usuario_id
+	})
+}
+
+// esta accion va a cambiar titulo mandando un dispatch que modifica ese atributo del reducer, recibe por parametro lo que se escribio en el input
+export const cambioTitulo = (titulo) => (dispatch) => {
+	dispatch({
+		type: "cambio_titulo",
+		payload: titulo
+	})
+}
