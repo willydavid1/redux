@@ -85,3 +85,8 @@ export const agregar = (nueva_tarea) => async (dispatch) => {
 		})
 	}
 }
+
+// actions que recibe por parametro la tarea editada
+export const editar = (tarea_editada) => (dispatch) => {
+	console.log(tarea_editada)
+}

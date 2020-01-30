@@ -11,6 +11,28 @@ import { Redirect } from "react-router-dom"
 
 class Guardar extends Component {
 
+    componentDidMount() {
+        // destructurar los parametros de la url el id del usuario y el id de la tarea
+        const {
+            match: {params : { usu_id, tar_id }},
+            tareas,
+            cambioUsuarioId,
+            cambioTitulo
+        } = this.props
+
+        // si usu_id y tar_id existe en el URL llama a los actions y le mandamos como parametro la tarea
+        if (usu_id && tar_id) {
+
+            // tarea va a ser igual a la tarea en especifico del usuario que se le dio click
+            const tarea = tareas[usu_id][tar_id]
+
+            // llamo a los dos actions que modifique los inputs y estado por la tarea que se le dio click
+            cambioUsuarioId(tarea.userId)
+            cambioTitulo(tarea.title)
+        }
+
+    }
+
     // manejador de eventos, se llama cuando ocurra un cambio en el input
     cambioUsuarioId = (event) => {
 
@@ -28,7 +50,13 @@ class Guardar extends Component {
     // maneja el evento click del boton guardar
     guardar = () => {
         // destructuro el estado, que tiene lo que escribio en el input
-        const { usuario_id, titulo, agregar } = this.props
+        const { 
+            match: {params : { usu_id, tar_id }},
+            tareas,
+            usuario_id, 
+            titulo, 
+            agregar,
+            editar } = this.props
 
         // objeto que tiene los valores de la nueva tarea que se enviara a la API
         const nueva_tarea = {
@@ -37,10 +65,29 @@ class Guardar extends Component {
             completed: false
         }
 
-        // llamo al action que va a hacer la peticion POST
-        agregar(nueva_tarea)
-    }
+        // si esas variables vienen en la URL ejecuta esto, caso contrario LLAMA al dispatch de tipo POST
+        if (usu_id && tar_id) {
 
+            // tarea va a ser igual a la tarea en especifico del usuario que se le dio click
+            const tarea = tareas[usu_id][tar_id];
+
+            // un objeto con todo lo que tenia la nueva_tarea y pisamos completed por la que esta en el estado y le entregamos un atributo adicional llamado id mandandole el id de la tarea, tiene los valores que va modificar en la API
+            const tarea_editada = {
+                ...nueva_tarea,
+                completed: tarea.completed,
+                id: tarea.id
+            }
+
+            // llamo al dispatch que va a hacer la peticion de tipo POST
+            editar(tarea_editada)
+        }
+        else{
+
+            // llamo al action que va a hacer la peticion POST
+            agregar(nueva_tarea)   
+        }
+
+    }
     // funcion del boton que si retorna true se deshabilita el boton
     deshabilitar = () => {
 
@@ -82,7 +129,7 @@ class Guardar extends Component {
 		return (
 			<div>
                 {
-                    // si regresar esta en true redirigimos a /tareas caso contrario no ejecuta nada
+                    // si regresar esta en true redirigimos a /tareas caso contrario ejecuta nada
                    (this.props.regresar) ? <Redirect to="/tareas" /> : ""
                 }
 				<h1>Guardar Tarea</h1>
