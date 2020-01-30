@@ -1,5 +1,12 @@
 import axios from 'axios'; //importamos axios para hacer peticiones http
-import { TRAER_TODAS, CARGANDO, ERROR } from '../types/tareasTypes'; // IMPORTAMOS SOLAMENTE la constante TRAER_TODOS de esta ruta ../types/usuariosTypes
+import { 
+	TRAER_TODAS, 
+	CARGANDO, 
+	ERROR,
+	CAMBIO_USUARIO_ID,
+	CAMBIO_TITULO,
+	AGREGADA
+} from '../types/tareasTypes'; // IMPORTAMOS SOLAMENTE la constante TRAER_TODOS de esta ruta ../types/usuariosTypes
 
 //esta funcion traerTodos retorna otra función, dispatch (envio) es el que va a disparar esa llamada y va a contactar al reducer para que haga el cambio de estado
 export const traerTodas = () => async (dispatch) => {
@@ -41,7 +48,7 @@ export const traerTodas = () => async (dispatch) => {
 // esta accion va a cambiar usuarioId mandando un dispatch que modifica ese atributo del reducer, recibe por parametro lo que se escribio en el input
 export const cambioUsuarioId = (usuario_id) => (dispatch) => {
 	dispatch({
-		type: "cambio_usuario_id",
+		type: CAMBIO_USUARIO_ID,
 		payload: usuario_id
 	})
 }
@@ -49,7 +56,7 @@ export const cambioUsuarioId = (usuario_id) => (dispatch) => {
 // esta accion va a cambiar titulo mandando un dispatch que modifica ese atributo del reducer, recibe por parametro lo que se escribio en el input
 export const cambioTitulo = (titulo) => (dispatch) => {
 	dispatch({
-		type: "cambio_titulo",
+		type: CAMBIO_TITULO,
 		payload: titulo
 	})
 }
@@ -68,7 +75,7 @@ export const agregar = (nueva_tarea) => async (dispatch) => {
 
 		// dispatch de tipo agregada para que se actualize el estado y no le doy payload porque ya se guardo en la base de datos
 		dispatch({
-			type: "agregada"
+			type: AGREGADA
 		})
 	} catch (error) {
 		console.log(error.message)

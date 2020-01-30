@@ -1,4 +1,12 @@
-import { TRAER_TODAS, CARGANDO, ERROR } from '../types/tareasTypes'; // IMPORTAMOS SOLAMENTE la constante TRAER_TODOS de esta ruta ../types/usuariosTypes
+import { 
+	TRAER_TODAS, 
+	CARGANDO, 
+	ERROR,
+	CAMBIO_USUARIO_ID,
+	CAMBIO_TITULO,
+	AGREGADA
+} from '../types/tareasTypes'; // IMPORTAMOS SOLAMENTE la constante TRAER_TODOS de esta ruta ../types/usuariosTypes
+
 
 // inicializamos un estado
 const INITIAL_STATE = {
@@ -28,13 +36,13 @@ export default (state = INITIAL_STATE, action) => {
 		case ERROR:
 			return { ...state, error: action.payload, cargando: false };
 
-		case "cambio_usuario_id":
+		case CAMBIO_USUARIO_ID:
 			return { ...state, usuario_id: action.payload }
 		
-		case "cambio_titulo":
+		case CAMBIO_TITULO:
 			return { ...state, titulo: action.payload }
 
-		case "agregada":
+		case AGREGADA:
 			return { ...state, tareas:{}, cargando: false, error: ""}
 
 		default:
