@@ -81,6 +81,10 @@ class Guardar extends Component {
 	render() {
 		return (
 			<div>
+                {
+                    // si regresar esta en true redirigimos a /tareas caso contrario no ejecuta nada
+                   (this.props.regresar) ? <Redirect to="/tareas" /> : ""
+                }
 				<h1>Guardar Tarea</h1>
 
 				Usuario id:

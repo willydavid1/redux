@@ -60,6 +60,7 @@ class Tareas extends Component {
 	};
 
 	render() {
+		console.log(this.props)
 		return (
 			<div>
 				<button>
