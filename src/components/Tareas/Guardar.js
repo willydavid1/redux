@@ -78,7 +78,7 @@ class Guardar extends Component {
                 id: tarea.id
             }
 
-            // llamo al dispatch que va a hacer la peticion de tipo POST
+            // llamo al dispatch que va a hacer la peticion de tipo PUT
             editar(tarea_editada)
         }
         else{

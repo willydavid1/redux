@@ -5,7 +5,8 @@ import {
 	ERROR,
 	CAMBIO_USUARIO_ID,
 	CAMBIO_TITULO,
-	AGREGADA
+	GUARDAR,
+	ACTUALIZAR
 } from '../types/tareasTypes'; // IMPORTAMOS SOLAMENTE la constante TRAER_TODOS de esta ruta ../types/usuariosTypes
 
 //esta funcion traerTodos retorna otra función, dispatch (envio) es el que va a disparar esa llamada y va a contactar al reducer para que haga el cambio de estado
@@ -75,7 +76,7 @@ export const agregar = (nueva_tarea) => async (dispatch) => {
 
 		// dispatch de tipo agregada para que se actualize el estado y no le doy payload porque ya se guardo en la base de datos
 		dispatch({
-			type: AGREGADA
+			type: GUARDAR
 		})
 	} catch (error) {
 		console.log(error.message)
@@ -86,7 +87,58 @@ export const agregar = (nueva_tarea) => async (dispatch) => {
 	}
 }
 
-// actions que recibe por parametro la tarea editada
-export const editar = (tarea_editada) => (dispatch) => {
-	console.log(tarea_editada)
+// actions que recibe por parametro un objeto con la info a modificar de una tarea, que se mandara a la API para que la API la modifique
+export const editar = (tarea_editada) => async (dispatch) => {
+	// dispatch de cargando
+	dispatch({
+		type: CARGANDO
+	})
+
+	try {
+		//peticion PUT el segundo parametro es el objeto que le voy a modificar a la API, y me retorna la respuesta de la peticion en respuesta.data el nuevo campo que se agrego, porque la api es una api fake.
+		const respuesta = await axios.put(`https://jsonplaceholder.typicode.com/todos/${tarea_editada.id}`, tarea_editada)
+		console.log(respuesta.data)
+
+		// dispatch de tipo agregada para que se actualize el estado y no le doy payload porque ya se modifico en la base de datos
+		dispatch({
+			type: GUARDAR
+		})
+	} catch (error) {
+		console.log(error.message)
+		dispatch({
+			type: ERROR,
+			payload: "Intente más tarde"
+		})
+	}
+
+}
+
+// actions que se llama cada vez que seleccionen un checkbox, recibe por parametro el id del usuario y el id de la tarea que se le dio click
+export const cambioCheck = (usu_id, tar_id) => (dispatch, getState) => {
+	// destructuro las tareas, del tareasReducer
+	const { tareas } = getState().tareasReducer;
+
+	// guardo en variable la tarea seleccionada, en especifico
+	const seleccionada = tareas[usu_id][tar_id]
+
+	// guardo en variable la tarea seleccionada, en especifico y hago un objeto de inmutabilidad que será igual a todas las tareas pero a la tarea que se pincho en el checkbox el valor del completed será el contrario
+	const actualizadas = {
+		...tareas
+	}
+	// seleciono las tareas del usuario y va a ser igual a todas las tareas de ese usuario.
+	actualizadas[usu_id] = {
+		...tareas[usu_id]
+	}
+	// de todas las tareas del usuario selecionamos la tarea que se le dio click y sera igual a las tareas del usuario y el completed va a hacer lo diferente de la tarea seleccionada
+	actualizadas[usu_id][tar_id] = {
+		...tareas[usu_id][tar_id],
+		completed: !seleccionada.completed
+	}
+
+	// dispatch mandando en especifico, un objeto con todas las tareas pero a la tarea que se le dio click le modifico el completed
+	dispatch({
+		type: ACTUALIZAR,
+		payload: actualizadas
+	})
+
 }

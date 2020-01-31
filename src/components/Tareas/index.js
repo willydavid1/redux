@@ -42,8 +42,8 @@ class Tareas extends Component {
 
 	// recibe el usu_id, el id del usuario, recordemos que iteramos por las tareas del usuario y por cada usuario retorno todas las tareas del usuario junto un checkbox.
 	ponerTareas = (usu_id) => {
-		// destructuro las tareas del estado
-		const { tareas } = this.props;
+		// destructuro las tareas y el actions del estado
+		const { tareas, cambioCheck } = this.props;
 
 		// const que sera igual al objeto de las tareas del usuario en especifico, tiene todas las tareas de un usuario
 		const por_usuario = {
@@ -53,7 +53,11 @@ class Tareas extends Component {
 		// saco las keys que son los id de las tareas y mapeo cada tarea del usuario en especifico| retorno un checkbox que por default el valor sera del jsonPlaceHolder y el titulo de la tarea
 		return Object.keys(por_usuario).map((tar_id) => (
 			<div key={tar_id}>
-				<input type="checkbox" defaultChecked={por_usuario[tar_id].completed} />
+				<input 
+					type="checkbox" 
+					defaultChecked={por_usuario[tar_id].completed} 
+					onChange={ () => cambioCheck(usu_id, tar_id) }
+				/>
 
 				{por_usuario[tar_id].title}
 
@@ -62,7 +66,7 @@ class Tareas extends Component {
 						Editar
 					</Link>
 				</button>
-				
+
 				<button className="m_left">Eliminar</button>
 			</div>
 		));
