@@ -142,3 +142,31 @@ export const cambioCheck = (usu_id, tar_id) => (dispatch, getState) => {
 	})
 
 }
+
+
+// actions que cuando den click al boton de eliminar se llama y recibe por parametro el id de la tarea y ejecuta una peticion de tipo DELETE
+export const eliminar = (tar_id) => async (dispatch) => {
+	dispatch({
+		type: CARGANDO
+	})
+
+	try {
+		// ejecuta la peticion de tipo delete al endpoint en especifico de la tarea
+		const respuesta = await axios.delete(`https://jsonplaceholder.typicode.com/todos/${tar_id}`)
+		console.log(respuesta)
+
+		// dispatch de tipo traer todas y como payload le mando nada para que las vuelva a buscar, como ya se elimino una tarea voy a querer limpiar las tareas para que vuelva a recargar todas las tareas
+		dispatch({
+			type: TRAER_TODAS,
+			payload: {}
+		})
+	} catch (error) {
+		console.log(error)
+		dispatch({
+			type: ERROR,
+			payload: "Servicio no disponible"
+		})
+	}
+}
+
+

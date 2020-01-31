@@ -18,6 +18,13 @@ class Tareas extends Component {
 		}
 	}
 
+	// cuando ocurra una actualizacion y no hay tareas llamalas
+	componentDidUpdate() {
+		if (!Object.keys(this.props.tareas).length) {
+			this.props.traerTodas();
+		}
+	}
+
 	mostrarContenido = () => {
 		// destructuro los valores del tareasReducer
 		const { tareas, cargando, error } = this.props;
@@ -43,7 +50,7 @@ class Tareas extends Component {
 	// recibe el usu_id, el id del usuario, recordemos que iteramos por las tareas del usuario y por cada usuario retorno todas las tareas del usuario junto un checkbox.
 	ponerTareas = (usu_id) => {
 		// destructuro las tareas y el actions del estado
-		const { tareas, cambioCheck } = this.props;
+		const { tareas, cambioCheck, eliminar } = this.props;
 
 		// const que sera igual al objeto de las tareas del usuario en especifico, tiene todas las tareas de un usuario
 		const por_usuario = {
@@ -67,12 +74,13 @@ class Tareas extends Component {
 					</Link>
 				</button>
 
-				<button className="m_left">Eliminar</button>
+				<button className="m_left" onClick={ () => eliminar(tar_id) }>Eliminar</button>
 			</div>
 		));
 	};
 
 	render() {
+		console.log(this.props.tareas)
 		return (
 			<div>
 				<button>
