@@ -20,8 +20,13 @@ class Tareas extends Component {
 
 	// cuando ocurra una actualizacion y no hay tareas llamalas
 	componentDidUpdate() {
-		if (!Object.keys(this.props.tareas).length) {
-			this.props.traerTodas();
+
+		// destructuro
+		const { tareas, cargando, traerTodas } = this.props
+
+		// si no hay tareas y si no esta cargando va a buscar a las tareas
+		if (!Object.keys(tareas).length && !cargando ) {
+			traerTodas();
 		}
 	}
 
@@ -80,7 +85,6 @@ class Tareas extends Component {
 	};
 
 	render() {
-		console.log(this.props.tareas)
 		return (
 			<div>
 				<button>

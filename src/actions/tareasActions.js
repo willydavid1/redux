@@ -6,7 +6,8 @@ import {
 	CAMBIO_USUARIO_ID,
 	CAMBIO_TITULO,
 	GUARDAR,
-	ACTUALIZAR
+	ACTUALIZAR,
+	LIMPIAR
 } from '../types/tareasTypes'; // IMPORTAMOS SOLAMENTE la constante TRAER_TODOS de esta ruta ../types/usuariosTypes
 
 //esta funcion traerTodos retorna otra función, dispatch (envio) es el que va a disparar esa llamada y va a contactar al reducer para que haga el cambio de estado
@@ -72,7 +73,6 @@ export const agregar = (nueva_tarea) => async (dispatch) => {
 	try {
 		//peticion POST el segundo parametro es el objeto que le voy a agregar a la API, y me retorna la respuesta de la peticion en respuesta.data el nuevo campo que se agrego, porque la api es una api fake.
 		const respuesta = await axios.post("https://jsonplaceholder.typicode.com/todos", nueva_tarea)
-		console.log(respuesta.data)
 
 		// dispatch de tipo agregada para que se actualize el estado y no le doy payload porque ya se guardo en la base de datos
 		dispatch({
@@ -97,7 +97,6 @@ export const editar = (tarea_editada) => async (dispatch) => {
 	try {
 		//peticion PUT el segundo parametro es el objeto que le voy a modificar a la API, y me retorna la respuesta de la peticion en respuesta.data el nuevo campo que se agrego, porque la api es una api fake.
 		const respuesta = await axios.put(`https://jsonplaceholder.typicode.com/todos/${tarea_editada.id}`, tarea_editada)
-		console.log(respuesta.data)
 
 		// dispatch de tipo agregada para que se actualize el estado y no le doy payload porque ya se modifico en la base de datos
 		dispatch({
@@ -153,7 +152,6 @@ export const eliminar = (tar_id) => async (dispatch) => {
 	try {
 		// ejecuta la peticion de tipo delete al endpoint en especifico de la tarea
 		const respuesta = await axios.delete(`https://jsonplaceholder.typicode.com/todos/${tar_id}`)
-		console.log(respuesta)
 
 		// dispatch de tipo traer todas y como payload le mando nada para que las vuelva a buscar, como ya se elimino una tarea voy a querer limpiar las tareas para que vuelva a recargar todas las tareas
 		dispatch({
@@ -169,4 +167,11 @@ export const eliminar = (tar_id) => async (dispatch) => {
 	}
 }
 
+// actions que limpia los input
+export const limpiarForma = () => (dispatch) => {
+
+	dispatch({
+		type: LIMPIAR
+	})
+}
 

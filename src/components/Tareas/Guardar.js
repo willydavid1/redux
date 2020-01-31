@@ -17,9 +17,11 @@ class Guardar extends Component {
             match: {params : { usu_id, tar_id }},
             tareas,
             cambioUsuarioId,
-            cambioTitulo
+            cambioTitulo,
+            limpiarForma
         } = this.props
 
+        // si vienen con parámetros en la URL viene a editar caso contrario viene a agregar y llamamos a limpiarForma
         // si usu_id y tar_id existe en el URL llama a los actions y le mandamos como parametro la tarea
         if (usu_id && tar_id) {
 
@@ -29,6 +31,9 @@ class Guardar extends Component {
             // llamo a los dos actions que modifique los inputs y estado por la tarea que se le dio click
             cambioUsuarioId(tarea.userId)
             cambioTitulo(tarea.title)
+        } else {
+            // actions que limpia los inputs
+            limpiarForma()
         }
 
     }
