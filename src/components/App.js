@@ -11,6 +11,7 @@ const App = () => (
 		<Menu />
 		<div className="margen">
 			<Route exact path="/" component={Usuarios} />
+			<Route exact path="/redux" component={Usuarios} />
 			<Route exact path="/tareas" component={Tareas} />
 			<Route exact path="/publicaciones/:key" component={Publicaciones} />
 			<Route exact path="/tareas/guardar" component={TareasGuardar} />
